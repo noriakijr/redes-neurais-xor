@@ -9,10 +9,11 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
 import java.awt.Color;
-import org.jfree.chart.axis.CategoryAxis;
-import org.jfree.chart.axis.CategoryLabelPositions;
-import org.jfree.chart.axis.NumberAxis;
-import org.jfree.chart.axis.NumberTickUnit;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.io.File;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 
 public class Grafico {
 
@@ -54,6 +55,19 @@ public class Grafico {
             throw new Exception(e);
         }
         return buf;
+    }
+    
+    public static void gerarImagem(String tituloGrafico, String tituloEixoX, String tituloEixoY, ArrayList arrayValores, String extensao) {
+        try {
+            ImageIcon grafico = new ImageIcon(Grafico.gerarGraficoLinha(tituloGrafico, tituloEixoX, tituloEixoY, arrayValores));
+            Image img = grafico.getImage();
+            BufferedImage bi = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_RGB);
 
+            Graphics2D g2 = bi.createGraphics();
+            g2.drawImage(img, 0, 0, null);
+            g2.dispose();
+            ImageIO.write(bi, extensao, new File("img." + extensao));
+        } catch (Exception e) {
+        }
     }
 }
